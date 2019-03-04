@@ -4,7 +4,8 @@ export default Object.freeze({
     black: '#000',
     gold: '#fed141',
     white: '#fff',
-    gray: '#fafafa'
+    gray: '#fafafa',
+    purple: "#a29bfe"
   }),
   hexColors: Object.freeze({
     darkGray: 0x222222,

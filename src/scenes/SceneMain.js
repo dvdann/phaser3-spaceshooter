@@ -51,13 +51,15 @@ export default class SceneMain extends Phaser.Scene {
   }
 
   create(){
+    // TODO: ADD BGM FROM SE
+    // TODO: ADD TINT IF DAMAGED
     // Define our objects
     console.log("From SceneMain");
     this.add.text(1, this.game.config.height - 15, window.global.signature);
-    this.add.text(window.global.width/2, this.game.config.height - 110, "Title", {fontSize: CONST.fonts.title});
-    this.add.text(window.global.width/2, this.game.config.height - 75, "Normal", {fontSize: CONST.fonts.normal});
-    this.add.text(window.global.width/2, this.game.config.height - 50, "Small", {fontSize: CONST.fonts.small});
-    this.add.text(window.global.width/2, this.game.config.height - 25, "Tiny", {fontSize: CONST.fonts.tiny});
+    // this.add.text(window.global.width/2, this.game.config.height - 110, "Title", {fontSize: CONST.fonts.title});
+    // this.add.text(window.global.width/2, this.game.config.height - 75, "Normal", {fontSize: CONST.fonts.normal});
+    // this.add.text(window.global.width/2, this.game.config.height - 50, "Small", {fontSize: CONST.fonts.small});
+    // this.add.text(window.global.width/2, this.game.config.height - 25, "Tiny", {fontSize: CONST.fonts.tiny});
 
     this.anims.create({
       key: 'rplrocket',
@@ -187,9 +189,15 @@ export default class SceneMain extends Phaser.Scene {
 
     this.physics.add.collider(this.playerLasers, this.enemies, (pLaser, enemy) => {
       if (enemy){
-        this.scoreAdd();
-        enemy.explode(true);
         pLaser.destroy();
+        if (this.isEnemyType(enemy, "ChaserShip") || this.isEnemyType(enemy, "CarrierShip")){
+          enemy.damaged();
+          console.log("Hayolo: " + enemy.getData('type'));
+        }
+        else {
+          this.scoreAdd();
+          enemy.explode(true);
+        }
       }
     });
 
@@ -222,8 +230,11 @@ export default class SceneMain extends Phaser.Scene {
       fontSize: CONST.fonts.big,
       fontStyle: 'bold',
       color: CONST.colors.white,
-      align: 'left'
+      align: 'left',
+      stroke: CONST.colors.purple,
+			strokeThickness: 2
     });
+    this.scoreText.setDepth(10);
     this.scoreReset();
 
   } // End of create
@@ -244,6 +255,8 @@ export default class SceneMain extends Phaser.Scene {
           Phaser.Math.Between(0, window.global.height),
           0
         );
+        enemy.setHP(2);
+        enemy.body.setImmovable();
       } // End of getEnemiesByType
     }
     else {
@@ -252,6 +265,9 @@ export default class SceneMain extends Phaser.Scene {
         Phaser.Math.Between(0, window.global.height),
         0
       );
+      enemy.setHP(3);
+      enemy.setSpeed(Phaser.Math.Between(75,175));
+      enemy.body.setImmovable();
     }
     if (enemy !== null){
       enemy.setScale(Phaser.Math.Between(10, 20) * 0.1);
@@ -268,6 +284,14 @@ export default class SceneMain extends Phaser.Scene {
       }
     }
     return enemiesWithType;
+  }
+
+  isEnemyType(enemy, type){
+    let isType = false;
+    if (enemy.getData('type') == type){
+      isType = true;
+    }
+    return isType;
   }
 
   scoreAdd(value = 1){
