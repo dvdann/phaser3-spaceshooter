@@ -1,6 +1,6 @@
-# Phaser 3 Webpack Project Template
+# Phaser 3 Webpack Project
 
-A Phaser 3 Project Template
+A Phaser 3 RPLGDC Project
 
 ### Requirements
 
