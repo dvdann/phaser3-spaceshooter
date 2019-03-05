@@ -13,16 +13,16 @@ export default class SceneMain extends Phaser.Scene {
   preload(){
     // Load images
     this.load.spritesheet('rplrocket', 'assets/rplrocket.png', {
-      frameWidth: 79,
-      frameHeight: 126
+      frameWidth: 35,
+      frameHeight: 55
     });
     this.load.spritesheet('gunship', 'assets/gunship.png', {
-      frameWidth: 128,
-      frameHeight: 128
+      frameWidth: 39,
+      frameHeight: 33
     });
     this.load.spritesheet('carriership', 'assets/carriership.png', {
-      frameWidth: 95,
-      frameHeight: 119
+      frameWidth: 30,
+      frameHeight: 37
     });
     this.load.spritesheet('chaser', 'assets/chaser.png', {
       frameWidth: 128,
@@ -44,6 +44,8 @@ export default class SceneMain extends Phaser.Scene {
     });
     this.load.image("sprLaserEnemy0", "assets/sprLaserEnemy0.png");
     this.load.image("sprLaserPlayer", "assets/sprLaserPlayer.png");
+    this.load.image("sprLaserENew", "assets/sprLaserEnemyn.png");
+    this.load.image("sprLaserPNew", "assets/sprLaserPlayern.png");
     this.load.spritesheet("sprPlayer", "assets/sprPlayer.png", {
       frameWidth: 16,
       frameHeight: 16
@@ -140,9 +142,13 @@ export default class SceneMain extends Phaser.Scene {
       this,
       window.global.width/2,
       window.global.height - 64,
-      'sprPlayer'
+      'rplrocket'
     );
-    this.player.play('sprPlayer', true); // Play animation
+    this.player.play('rplrocket', true); // Play animation
+    this.player.body.setSize(
+      this.player.displayWidth/2,
+      this.player.displayHeight
+    );
 
     // this.eChaser = new ChaserShip(
     //   this,
@@ -176,6 +182,7 @@ export default class SceneMain extends Phaser.Scene {
     this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.cursors = this.input.keyboard.createCursorKeys();
     this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     // Define Group of GameObjects
@@ -267,8 +274,9 @@ export default class SceneMain extends Phaser.Scene {
       enemy.body.setImmovable();
     }
     if (enemy !== null){
-      let isCarrier = this.isEnemyType(enemy, 'CarrierShip');
-      let scaleRand = isCarrier ? Phaser.Math.Between(17, 20) * 0.1 : Phaser.Math.Between(10, 20) * 0.1;
+      let isChoosen = (this.isEnemyType(enemy, 'CarrierShip') || this.isEnemyType(enemy, 'GunShip'));
+      let scaleRand = isChoosen ? 1 : Phaser.Math.Between(10, 20) * 0.1;
+      // let scaleRand = isCarrier ? Phaser.Math.Between(17, 20) * 0.1 : Phaser.Math.Between(10, 20) * 0.1;
       // console.log(isCarrier+ " -> " +scaleRand);
       enemy.setScale(scaleRand);
       this.enemies.add(enemy);
@@ -307,10 +315,11 @@ export default class SceneMain extends Phaser.Scene {
   update(){
     this.player.update();
     if (!this.player.isDead()){
-      if (this.keyA.isDown){
+      // Player control
+      if (this.keyA.isDown || this.cursors.left.isDown){
         this.player.moveLeft();
       }
-      else if (this.keyD.isDown){
+      else if (this.keyD.isDown || this.cursors.right.isDown){
         this.player.moveRight();
       }
       // if (this.keyW.isDown){
@@ -319,7 +328,7 @@ export default class SceneMain extends Phaser.Scene {
       // else if (this.keyS.isDown){
       //   this.player.moveDown();
       // }
-
+      // Player shoot
       if (this.keySpace.isDown && !this.player.isDead()) {
         this.player.setData("isShooting", true);
       }

@@ -3,14 +3,14 @@ import EnemyLaser from './EnemyLaser';
 
 export default class GunShip extends Enemy {
   constructor(scene, x, y) {
-    super(scene, x, y, "sprEnemy0", "GunShip");
+    super(scene, x, y, "gunship", "GunShip");
     if (this.x < this.displayWidth){
       this.x = this.displayWidth;
     }
     else if (this.x > (window.global.width - this.displayWidth)) {
       this.x = window.global.width - this.displayWidth;
     }
-    this.play("sprEnemy0");
+    this.play("gunship");
     this.shootTimer = this.scene.time.addEvent({
       delay: Phaser.Math.Between(1000, 2000),
       callback: this.doShoot.bind(this),
@@ -23,7 +23,12 @@ export default class GunShip extends Enemy {
     let laser = new EnemyLaser(
       this.scene,
       this.x,
-      this.y
+      this.y + 15
+    );
+    laser.setDepth(-0.3);
+    laser.body.setSize(
+      laser.displayWidth/2,
+      laser.displayHeight
     );
     laser.setScale(this.scaleX);
     this.scene.enemyLasers.add(laser); // refer to SceneMain variable

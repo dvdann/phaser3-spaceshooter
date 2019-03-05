@@ -77,7 +77,7 @@ export default class SceneMainMenu extends Phaser.Scene {
     this.btnPlay.on('pointerup', () => {
       this.btnPlay.setTexture('sprBtnPlayHover');
     });
-    this.title = this.add.text(window.global.width * 0.5, 128, "SPACE SHOOTER", {
+    this.title = this.add.text(window.global.width * 0.5, 128, "SPACESHOOTER", {
       fontFamily: 'monospace',
       fontSize: CONST.fonts.title,
       fontStyle: 'bold',

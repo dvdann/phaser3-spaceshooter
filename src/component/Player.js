@@ -44,8 +44,8 @@ export default class Player extends Entity {
     this.body.setVelocity(0, 0);
     this.x = Phaser.Math.Clamp(
       this.x,
-      0 + (this.displayWidth/2),
-      window.global.width - (this.displayWidth/2)
+      5 + (this.displayWidth/2),
+      window.global.width - (this.displayWidth/2 + 5)
     );
     // this.y = Phaser.Math.Clamp(this.y, 0, this.scene.game.config.height);
 
@@ -55,8 +55,13 @@ export default class Player extends Entity {
         this.setData("timerShootTick", this.getData("timerShootTick") + 1);
       }
       else { // when the "manual timer" is triggered:
-        let laser = new PlayerLaser(this.scene, this.x, this.y);
+        let laser = new PlayerLaser(this.scene, this.x, (this.y - 25));
         let sfxType = 0; //Phaser.Math.Between(0, 1);
+        laser.setDepth(-0.1);
+        laser.body.setSize(
+          laser.displayWidth * 0.85,
+          laser.displayHeight
+        );
         this.scene.playerLasers.add(laser);
         this.scene.sfx.laser[sfxType].play(); // play the laser sound effect
         this.setData("timerShootTick", 0);
