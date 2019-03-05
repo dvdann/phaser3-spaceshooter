@@ -30,8 +30,9 @@ export default class Player extends Entity {
   }
 
   onDestroy(){
+    this.scene.cameras.main.shake(450);
     this.scene.time.addEvent({ // go to game over scene
-      delay: 1000,
+      delay: 1100,
       callback: () => {
         this.scene.scene.start("SceneGameOver");
       },

@@ -1,5 +1,6 @@
 import CONST from '../data/const';
 import ScrollingBackGround from '../component/ScrollingBackGround';
+import LocalDatabase from '../component/LocalDatabase';
 
 export default class SceneMainMenu extends Phaser.Scene {
   constructor() {
@@ -9,6 +10,7 @@ export default class SceneMainMenu extends Phaser.Scene {
   init(){
     window.global.height = this.game.config.height;
     window.global.width = this.game.config.width;
+    this.dbLocal = new LocalDatabase();
   }
 
   preload(){
@@ -30,11 +32,27 @@ export default class SceneMainMenu extends Phaser.Scene {
     this.load.audio("sndExplode1", "assets/audio/sndExplode1.wav");
     this.load.audio("sndLaser", "assets/audio/sndLaser.wav");
     this.load.audio("sndLaser0", ["assets/audio/sndLaser0.mp3", "assets/audio/sndLaser0.ogg"]);
-    this.load.audio("bgm", ["assets/audio/BGM_DCannon.mp3", "assets/audio/BGM_DCannon.ogg"]);
+    // this.load.audio("bgm", ["assets/audio/BGM_DCannon.mp3", "assets/audio/BGM_DCannon.ogg"]);
+    this.load.audio("bgm", ["assets/audio/bgm_bit.mp3", "assets/audio/bgm_bit.ogg"]);
   }
 
   create(){
     console.log("From SceneMainMenu");
+    this.add.text(2, this.game.config.height - 2,
+      "Play Control\nMove: [A (Left), D (Right)]\nShoot: [Space]\n" + window.global.signature)
+      .setOrigin(0, 1);
+
+    let localScore = this.dbLocal.getData('localScore');
+    if (localScore){
+      this.add.text(window.global.width/2, 235, localScore, {
+        fontFamily: 'monospace',
+        fontSize: CONST.fonts.big,
+        fontStyle: 'bold',
+        color: CONST.colors.white,
+        align: 'center'
+      }).setOrigin(0.5);
+    }
+
     // this.scene.start('SceneMain');
     if (window.global.bgmInstance === undefined){
       this.bgm = this.sound.add("bgm", {loop: true, volume: 0.5});
@@ -49,7 +67,7 @@ export default class SceneMainMenu extends Phaser.Scene {
     };
     this.btnPlay = this.add.sprite(
       window.global.width / 2,
-      window.global.height / 2,
+      (window.global.height / 2) + 100,
       'sprBtnPlay'
     );
     this.btnPlay.setInteractive();
@@ -83,7 +101,7 @@ export default class SceneMainMenu extends Phaser.Scene {
     this.time.addEvent({
       delay: 90,
       callback: () => {
-        console.log("PLAY");
+        // console.log("PLAY");
         this.scene.start('SceneMain');
       },
       loop: false

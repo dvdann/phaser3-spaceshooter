@@ -1,3 +1,4 @@
+import CONST from '../data/const';
 import Entity from './Entity';
 
 export default class Enemy extends Entity {
@@ -19,15 +20,29 @@ export default class Enemy extends Entity {
     this.body.setVelocity(x, y);
   }
 
+  damageEffect(){
+    this.setTint(CONST.hexColors.red);
+    this.scene.time.addEvent({
+      delay: 120,
+      callback: () => {
+        this.setTint(CONST.hexColors.white);
+      },
+      loop: false
+    });
+  }
+
   damaged(value){
     if (!this.isDead()){
       let currHP = this.remainHP();
+      // this.setTint(CONST.hexColors.red);
+      this.damageEffect();
       value = value === undefined ? 1 : value;
       this.setHP(currHP-value);
       if (this.remainHP() <= 0){
+        this.scene.scoreAdd(3);
+        this.explode(true);
         this.setHP(0);
         this.setData('isDead', true);
-        this.destroy();
       }
     }
   }
@@ -39,5 +54,5 @@ export default class Enemy extends Entity {
   setHP(value){
     this.setData('health', value);
   }
-  
+
 }

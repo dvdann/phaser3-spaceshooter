@@ -51,11 +51,9 @@ export default class SceneMain extends Phaser.Scene {
   }
 
   create(){
-    // TODO: ADD BGM FROM SE
     // TODO: ADD TINT IF DAMAGED
     // Define our objects
     console.log("From SceneMain");
-    this.add.text(1, this.game.config.height - 15, window.global.signature);
     // this.add.text(window.global.width/2, this.game.config.height - 110, "Title", {fontSize: CONST.fonts.title});
     // this.add.text(window.global.width/2, this.game.config.height - 75, "Normal", {fontSize: CONST.fonts.normal});
     // this.add.text(window.global.width/2, this.game.config.height - 50, "Small", {fontSize: CONST.fonts.small});
@@ -141,11 +139,10 @@ export default class SceneMain extends Phaser.Scene {
     this.player = new Player(
       this,
       window.global.width/2,
-      window.global.height - 140,
+      window.global.height - 64,
       'sprPlayer'
     );
     this.player.play('sprPlayer', true); // Play animation
-    console.log("objType: " + this.player.getData('type'));
 
     // this.eChaser = new ChaserShip(
     //   this,
@@ -192,7 +189,7 @@ export default class SceneMain extends Phaser.Scene {
         pLaser.destroy();
         if (this.isEnemyType(enemy, "ChaserShip") || this.isEnemyType(enemy, "CarrierShip")){
           enemy.damaged();
-          console.log("Hayolo: " + enemy.getData('type'));
+          // console.log("Hayolo: " + enemy.getData('type'));
         }
         else {
           this.scoreAdd();
@@ -220,7 +217,7 @@ export default class SceneMain extends Phaser.Scene {
     });
 
     this.time.addEvent({
-      delay: 1000,
+      delay: Phaser.Math.Between(800, 1000),
       callback: this.createEnemy.bind(this),
       loop: true
     });
@@ -270,7 +267,10 @@ export default class SceneMain extends Phaser.Scene {
       enemy.body.setImmovable();
     }
     if (enemy !== null){
-      enemy.setScale(Phaser.Math.Between(10, 20) * 0.1);
+      let isCarrier = this.isEnemyType(enemy, 'CarrierShip');
+      let scaleRand = isCarrier ? Phaser.Math.Between(17, 20) * 0.1 : Phaser.Math.Between(10, 20) * 0.1;
+      // console.log(isCarrier+ " -> " +scaleRand);
+      enemy.setScale(scaleRand);
       this.enemies.add(enemy);
     }
   }

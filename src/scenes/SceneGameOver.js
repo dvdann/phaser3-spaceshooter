@@ -1,8 +1,14 @@
 import CONST from '../data/const';
+import LocalDatabase from '../component/LocalDatabase';
 
 export default class SceneGameOver extends Phaser.Scene {
   constructor() {
     super('SceneGameOver');
+  }
+
+  init(){
+    this.dbLocal = new LocalDatabase();
+    this.isHighscore = this.dbLocal.setHighscore();
   }
 
   create(){
@@ -15,7 +21,7 @@ export default class SceneGameOver extends Phaser.Scene {
     });
     this.title.setOrigin(0.5);
 
-    this.scoreLabel = this.add.text(window.global.width * 0.5, 128, "YOUR SCORE: 99", {
+    this.scoreLabel = this.add.text(window.global.width * 0.5, 188, "SCORE: 99", {
       fontFamily: 'monospace',
       fontSize: CONST.fonts.big,
       fontStyle: 'bold',
@@ -23,7 +29,21 @@ export default class SceneGameOver extends Phaser.Scene {
       align: 'center'
     });
     this.scoreLabel.setOrigin(0.5);
-    this.scoreLabel.setText("YOUR SCORE: " + this.getScore());
+    this.scoreLabel.setText("SCORE: " + this.getScore());
+
+    this.highscoreLabel = this.add.text(window.global.width * 0.5, 128, "YOUR HIGHSCORE: 99", {
+      fontFamily: 'monospace',
+      fontSize: CONST.fonts.normal,
+      fontStyle: 'bold',
+      color: CONST.colors.white,
+      align: 'center'
+    });
+    this.highscoreLabel.setOrigin(0.5);
+    let highscoreText = "YOUR HIGHSCORE: " + this.dbLocal.getData('localScore');
+    if (this.isHighscore){
+      highscoreText = highscoreText + " (NEW)";
+    }
+    this.highscoreLabel.setText(highscoreText);
 
     this.sfx = {
       btnOver: this.sound.add("sndBtnOver"),

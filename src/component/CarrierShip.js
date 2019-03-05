@@ -13,9 +13,9 @@ export default class CarrierShip extends Enemy {
     // console.log("CarrierShip Created");
   }
 
-  remainHP(){
-    console.log("Override!");
-    let add = super.remainHP() + 1;
-    return add;
-  }
+  // remainHP(){
+  //   console.log("Override!");
+  //   let add = super.remainHP() + 1;
+  //   return add;
+  // }
 }

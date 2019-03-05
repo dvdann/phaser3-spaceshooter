@@ -21,7 +21,7 @@ export default class ChaserShip extends Enemy {
         this.y,
         this.scene.player.x,
         this.scene.player.y
-      ) < 105){
+      ) < 100){
         this.state = this.states.CHASE;
       }
       else {
@@ -33,7 +33,10 @@ export default class ChaserShip extends Enemy {
           let dy = this.scene.player.y - this.y;
           let dx = this.scene.player.x - this.x;
           let angle = Math.atan2(dy, dx);
-          this.setSpeedXY(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
+          this.setSpeedXY(
+            Math.cos(angle) * (this.speed * 0.75),
+            Math.sin(angle) * (this.speed * 0.75)
+          );
           break;
         default:
           this.setSpeedXY(0, this.speed);
