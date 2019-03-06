@@ -270,7 +270,7 @@ export default class SceneMain extends Phaser.Scene {
         0
       );
       enemy.setHP(3);
-      enemy.setSpeed(Phaser.Math.Between(75,175));
+      enemy.setSpeed(Phaser.Math.Between(100,180));
       enemy.body.setImmovable();
     }
     if (enemy !== null){
@@ -305,6 +305,18 @@ export default class SceneMain extends Phaser.Scene {
   scoreAdd(value = 1){
     window.global.score += value;
     this.scoreText.setText(window.global.score);
+    this.tweens.add({
+      targets: this.scoreText,
+      scaleX: 1.3,
+      scaleY: 1.3,
+      yoyo: true,
+      duration: 60,
+      repeat: 0,
+      onComplete: () => {
+        this.scoreText.scaleX = 1;
+        this.scoreText.scaleY = this.scoreText.scaleX;
+      }
+    });
   }
 
   scoreReset(){
