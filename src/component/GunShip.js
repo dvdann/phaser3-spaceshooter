@@ -12,7 +12,7 @@ export default class GunShip extends Enemy {
     }
     this.play("gunship2");
     this.shootTimer = this.scene.time.addEvent({
-      delay: Phaser.Math.Between(1000, 2000),
+      delay: Phaser.Math.RND.between(1000, 2000),
       callback: this.doShoot.bind(this),
       loop: true
     });

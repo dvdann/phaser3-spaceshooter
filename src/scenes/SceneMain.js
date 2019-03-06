@@ -133,7 +133,7 @@ export default class SceneMain extends Phaser.Scene {
     this.backgrounds = [];
     for (let i = 0; i < 5; i++) { // creat five scrolling backgrounds
       let keys = ["sprBg0", "sprBg1"];
-      let key = keys[Phaser.Math.Between(0, keys.length - 1)];
+      let key = keys[Phaser.Math.RND.between(0, keys.length - 1)];
       let bg = new ScrollingBackGround(this, key, i * 10);
       this.backgrounds.push(bg);
     }
@@ -224,7 +224,7 @@ export default class SceneMain extends Phaser.Scene {
     });
 
     this.time.addEvent({
-      delay: Phaser.Math.Between(800, 1000),
+      delay: Phaser.Math.RND.between(800, 1000),
       callback: this.createEnemy.bind(this),
       loop: true
     });
@@ -245,18 +245,18 @@ export default class SceneMain extends Phaser.Scene {
 
   createEnemy(){
     let enemy = null;
-    if (Phaser.Math.Between(0, 10) >= 3) {
+    if (Phaser.Math.RND.between(0, 10) >= 3) {
       enemy = new GunShip(
         this,
-        Phaser.Math.Between(0, window.global.height),
+        Phaser.Math.RND.between(0, window.global.height),
         0
       );
     }
-    else if (Phaser.Math.Between(0, 10) >= 5) {
+    else if (Phaser.Math.RND.between(0, 10) >= 5) {
       if (this.getEnemiesByType('ChaserShip').length < 5){
         enemy = new ChaserShip(
           this,
-          Phaser.Math.Between(0, window.global.height),
+          Phaser.Math.RND.between(0, window.global.height),
           0
         );
         enemy.setHP(2);
@@ -266,16 +266,16 @@ export default class SceneMain extends Phaser.Scene {
     else {
       enemy = new CarrierShip(
         this,
-        Phaser.Math.Between(0, window.global.height),
+        Phaser.Math.RND.between(0, window.global.height),
         0
       );
       enemy.setHP(3);
-      enemy.setSpeed(Phaser.Math.Between(100,180));
+      enemy.setSpeed(Phaser.Math.RND.between(100,180));
       enemy.body.setImmovable();
     }
     if (enemy !== null){
       let isChoosen = this.isEnemyType(enemy, 'ChaserShip');
-      let scaleRand = isChoosen ? Phaser.Math.Between(10, 20) * 0.1 : 1;
+      let scaleRand = isChoosen ? Phaser.Math.RND.between(10, 20) * 0.1 : 1;
       if (this.isEnemyType(enemy, 'CarrierShip')){
         enemy.body.setSize(enemy.displayWidth*0.5, enemy.displayHeight*0.7, true);
       }

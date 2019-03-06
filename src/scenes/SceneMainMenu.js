@@ -122,7 +122,7 @@ export default class SceneMainMenu extends Phaser.Scene {
     this.backgrounds = [];
     for (let i = 0; i < 5; i++) {
       let keys = ["sprBg0", "sprBg1"];
-      let key = keys[Phaser.Math.Between(0, keys.length - 1)];
+      let key = keys[Phaser.Math.RND.between(0, keys.length - 1)];
       let bg = new ScrollingBackGround(this, key, i * 10);
       this.backgrounds.push(bg);
     }

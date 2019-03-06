@@ -4,7 +4,7 @@ import Entity from './Entity';
 export default class Enemy extends Entity {
   constructor(scene, x, y, key, type) {
     super(scene, x, y, key, type);
-    this.setSpeed(Phaser.Math.Between(50, 100));
+    this.setSpeed(Phaser.Math.RND.between(50, 100));
     this.setHP(1); // Default value
     this.states = {
       MOVE_DOWN: "MOVE_DOWN",
