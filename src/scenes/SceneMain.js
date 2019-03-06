@@ -14,19 +14,19 @@ export default class SceneMain extends Phaser.Scene {
     // Load images
     this.load.spritesheet('rplrocket', 'assets/rplrocket.png', {
       frameWidth: 35,
-      frameHeight: 55
+      frameHeight: 56
     });
     this.load.spritesheet('gunship', 'assets/gunship.png', {
       frameWidth: 39,
       frameHeight: 33
     });
     this.load.spritesheet('carriership', 'assets/carriership.png', {
-      frameWidth: 30,
-      frameHeight: 37
+      frameWidth: 40,
+      frameHeight: 50
     });
-    this.load.spritesheet('chaser', 'assets/chaser.png', {
-      frameWidth: 128,
-      frameHeight: 128
+    this.load.spritesheet('gunship2', 'assets/gunship2.png', {
+      frameWidth: 32,
+      frameHeight: 32
     });
 
     this.load.spritesheet("sprExplosion", "assets/sprExplosion.png", {
@@ -83,8 +83,8 @@ export default class SceneMain extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: 'chaser',
-      frames: this.anims.generateFrameNumbers('chaser'),
+      key: 'gunship2',
+      frames: this.anims.generateFrameNumbers('gunship2'),
       frameRate: 12,
       repeat: -1
     });
@@ -274,10 +274,11 @@ export default class SceneMain extends Phaser.Scene {
       enemy.body.setImmovable();
     }
     if (enemy !== null){
-      let isChoosen = (this.isEnemyType(enemy, 'CarrierShip') || this.isEnemyType(enemy, 'GunShip'));
-      let scaleRand = isChoosen ? 1 : Phaser.Math.Between(10, 20) * 0.1;
-      // let scaleRand = isCarrier ? Phaser.Math.Between(17, 20) * 0.1 : Phaser.Math.Between(10, 20) * 0.1;
-      // console.log(isCarrier+ " -> " +scaleRand);
+      let isChoosen = this.isEnemyType(enemy, 'ChaserShip');
+      let scaleRand = isChoosen ? Phaser.Math.Between(10, 20) * 0.1 : 1;
+      if (this.isEnemyType(enemy, 'CarrierShip')){
+        enemy.body.setSize(enemy.displayWidth*0.5, enemy.displayHeight*0.7, true);
+      }
       enemy.setScale(scaleRand);
       this.enemies.add(enemy);
     }
