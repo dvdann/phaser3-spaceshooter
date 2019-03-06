@@ -8,14 +8,47 @@ export default class SceneMainMenu extends Phaser.Scene {
   }
 
   init(){
-    window.global.height = this.game.config.height;
     window.global.width = this.game.config.width;
+    window.global.height = this.game.config.height;
     this.dbLocal = new LocalDatabase();
   }
 
   preload(){
     // Load assets
-    // TODO: CREATE PRELOAD LOADING
+    // Preload loading bar Line 19-49
+    let assetText = this.make.text({
+      x: window.global.width / 2,
+      y: (window.global.height / 2 - 70),
+      text: '',
+      style: {
+          font: '18px monospace',
+          fill: CONST.colors.white
+      }
+    })
+    .setOrigin(0.5);
+    let loadingText = this.make.text({
+      x: assetText.x,
+      y: assetText.y + 32,
+      text: '',
+      style: {
+          font: '18px monospace',
+          fill: CONST.colors.white
+      }
+    })
+    .setOrigin(0.5);;
+    this.load.on('progress', value => {
+      console.log(`Loading: ${parseInt(value * 100)} %`);
+      loadingText.setText(`${parseInt(value * 100)} %`);
+    });
+    this.load.on('fileprogress', file => {
+      assetText.setText('Loading asset: ' + file.key);
+    });
+    this.load.on('complete', () => {
+      assetText.destroy();
+      loadingText.destroy();
+    });
+    // End of loading
+
     this.load.image("sprBtnPlay", "assets/sprBtnPlay.png");
     this.load.image("sprBtnPlayHover", "assets/sprBtnPlayHover.png");
     this.load.image("sprBtnPlayDown", "assets/sprBtnPlayDown.png");

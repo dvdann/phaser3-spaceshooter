@@ -30,6 +30,6 @@ window.onload = () => {
 };
 
 window.global = {
-  signature: '@RPLGDC2019 | Arsyel - Witsq - Helmi',
+  signature: '@RPLGDC2019 | Arsyel - Witsqa - Helmi',
   score: 0
 };
