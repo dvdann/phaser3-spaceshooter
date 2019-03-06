@@ -5,6 +5,7 @@ import SceneGameOver from './scenes/SceneGameOver';
 
 let game;
 let scenes = [];
+let seedRand = Date.now();
 scenes.push(SceneMainMenu);
 scenes.push(SceneMain);
 scenes.push(SceneGameOver);
@@ -17,6 +18,7 @@ window.onload = () => {
       height: 640,
       backgroundColor: 'black',
       pixelArt: true,
+      seed: [seedRand],
       physics: {
     		default: 'arcade',
     		arcade: {
