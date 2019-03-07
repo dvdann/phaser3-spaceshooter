@@ -146,8 +146,8 @@ export default class SceneMain extends Phaser.Scene {
     );
     this.player.play('rplrocket', true); // Play animation
     this.player.body.setSize(
-      this.player.displayWidth/2,
-      this.player.displayHeight
+      this.player.displayWidth * 0.5,
+      this.player.displayHeight * 0.8
     );
 
     // this.eChaser = new ChaserShip(
@@ -245,10 +245,16 @@ export default class SceneMain extends Phaser.Scene {
 
   createEnemy(){
     let enemy = null;
+    let randomPosX = Phaser.Math.RND.between(0, window.global.height);
+    let threshold = (this.getEnemiesByPosX(380).length >= 3);
+    if (threshold){
+      randomPosX = Phaser.Math.RND.between(10, window.global.height * 0.5);
+      console.log(`Recallibrate enemy posX to: ${randomPosX}`);
+    }
     if (Phaser.Math.RND.between(0, 10) >= 3) {
       enemy = new GunShip(
         this,
-        Phaser.Math.RND.between(0, window.global.height),
+        randomPosX,
         0
       );
     }
@@ -256,7 +262,7 @@ export default class SceneMain extends Phaser.Scene {
       if (this.getEnemiesByType('ChaserShip').length < 5){
         enemy = new ChaserShip(
           this,
-          Phaser.Math.RND.between(0, window.global.height),
+          randomPosX,
           0
         );
         enemy.setHP(2);
@@ -266,7 +272,7 @@ export default class SceneMain extends Phaser.Scene {
     else {
       enemy = new CarrierShip(
         this,
-        Phaser.Math.RND.between(0, window.global.height),
+        randomPosX,
         0
       );
       enemy.setHP(3);
@@ -274,21 +280,30 @@ export default class SceneMain extends Phaser.Scene {
       enemy.body.setImmovable();
     }
     if (enemy !== null){
+      console.log(`Random pos x: ${randomPosX}, enemyType: ${enemy.getData('type')}`);
       let isChoosen = this.isEnemyType(enemy, 'ChaserShip');
       let scaleRand = isChoosen ? Phaser.Math.RND.between(10, 20) * 0.1 : 1;
-      if (this.isEnemyType(enemy, 'CarrierShip')){
-        enemy.body.setSize(enemy.displayWidth*0.5, enemy.displayHeight*0.7, true);
-      }
       enemy.setScale(scaleRand);
       this.enemies.add(enemy);
     }
+  }
+
+  getEnemiesByPosX(posX){
+    let pickedEnemies = [];
+    this.enemies.children.iterate( enemy => {
+      console.log(`iterate enemy: ${enemy.x}`);
+      if (enemy.x > posX){
+        pickedEnemies.push(enemy);
+      }
+    });
+    return pickedEnemies;
   }
 
   getEnemiesByType(type){
     let enemiesWithType = [];
     for (let i = 0; i < this.enemies.getChildren().length; i++) {
       let enemy = this.enemies.getChildren()[i];
-      if (enemy.getData('type') == type){
+      if (this.isEnemyType(enemy, type)){
         enemiesWithType.push(enemy);
       }
     }

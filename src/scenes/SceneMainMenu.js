@@ -10,6 +10,7 @@ export default class SceneMainMenu extends Phaser.Scene {
   init(){
     window.global.width = this.game.config.width;
     window.global.height = this.game.config.height;
+    window.emitter = new Phaser.Events.EventEmitter();
     this.dbLocal = new LocalDatabase();
   }
 

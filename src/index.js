@@ -1,4 +1,4 @@
-import 'phaser';
+import Phaser from 'phaser';
 import SceneMain from './scenes/SceneMain';
 import SceneMainMenu from './scenes/SceneMainMenu';
 import SceneGameOver from './scenes/SceneGameOver';
@@ -33,5 +33,6 @@ window.onload = () => {
 
 window.global = {
   signature: '@RPLGDC2019 | Arsyel - Witsqa - Helmi',
-  score: 0
+  score: 0,
+  emitter: null
 };
